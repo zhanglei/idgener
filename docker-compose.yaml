@@ -1,0 +1,8 @@
+version: "3.7"
+services:
+  master:
+    build:
+      context: .
+    container_name: master
+    ports:
+      - "7656:7656"

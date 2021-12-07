@@ -1,0 +1,4 @@
+debug: true
+data_dir: ./tmp/data
+http_address: 0.0.0.0:7656
+multicast_address: 234.4.10.24:7657

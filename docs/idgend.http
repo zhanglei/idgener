@@ -1,0 +1,16 @@
+### health
+GET {{host}}/health
+Accept: application/json
+
+### get all nodes
+GET {{host}}/api/nodes
+Accept: application/json
+
+
+### join node
+POST {{host}}/api/nodes
+Content-Type: application/json
+
+{
+	"address": "10.24.0.10:1034"
+}

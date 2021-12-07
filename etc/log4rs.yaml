@@ -1,0 +1,27 @@
+refresh_rate: 30 seconds
+appenders:
+  stdout:
+    kind: console
+    encoder:
+      pattern: "{h({l})} {d(%T)(local)} [{t}] {m}{n}"
+
+root:
+  level: info
+  appenders:
+    - stdout
+
+loggers:
+  idgener:
+    level: debug
+  actix_web::middleware::logger:
+    level: warn
+#  http 日志
+# actix_server::builder:
+#   level: warn
+# app::backend::db:
+#   level: info
+# app::requests:
+#   level: info
+#   appenders:
+#     - stdout
+#   additive: false
