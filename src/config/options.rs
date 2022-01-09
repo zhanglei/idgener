@@ -52,6 +52,11 @@ pub struct Options {
     #[structopt(env = "IDGEND_HTTP_ADDRESS", short = "H", long, parse(try_from_str))]
     pub http_address: Option<SocketAddr>,
 
+    /// 使用指定的ID创建集群，ID集群判断的优先级高于组播发现机制
+    #[merge(strategy = overwrite)]
+    #[structopt(env = "IDGEND_ID", short = "i", long, parse(try_from_str))]
+    pub id: Option<u16>,
+
     /// multicast finder address
     #[merge(strategy = overwrite)]
     #[structopt(
@@ -78,6 +83,7 @@ impl Options {
                 Ipv4Addr::UNSPECIFIED,
                 PORT,
             ))),
+            id: None,
             /*
             multicast_address: Some(SocketAddr::V4(SocketAddrV4::new(
                 Ipv4Addr::new(234, 4, 10, 24),

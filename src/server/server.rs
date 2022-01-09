@@ -1,5 +1,5 @@
 use std::net::SocketAddr;
-use std::ops::{Add};
+use std::ops::Add;
 
 use std::str::FromStr;
 use std::sync::Arc;
@@ -180,7 +180,15 @@ pub async fn embedded(
     let server = bind(&bind_address, state.clone())?;
 
     let mut futures = vec![];
-    if let Some(multicast_address) = &config.multicast_address {
+    if let Some(id) = &config.id {
+        log::info!("make cluster, self id: {}", id);
+        let _ = init_self(&bind_address, state.clone(), Some(*id))?;
+        let mut rc = stopper.subscribe();
+        futures.push(tokio::spawn(async move {
+            let _ = rc.recv().await;
+            Ok(())
+        }));
+    } else if let Some(multicast_address) = &config.multicast_address {
         log::info!("find multicast address: {}", &multicast_address);
         let timeout = Some(Duration::from_secs(
             config.keep_alive.period_seconds.clone(),
@@ -221,6 +229,7 @@ pub async fn embedded(
 
     let mut stopper = stopper.subscribe();
     let srv = server.clone();
+
     tokio::select! {
         out = try_join_all(futures) => {
             if let Err(out) = out {

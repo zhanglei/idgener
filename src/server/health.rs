@@ -14,7 +14,7 @@ pub enum HealthState {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Health {
     pub state: HealthState,
-    pub leader: bool,
+    pub leader: Option<u16>,
     pub id: u16,
 }
 
@@ -23,14 +23,13 @@ pub async fn health(data: web::Data<AppState>) -> Result<HttpResponse> {
     return match nodes.get_current() {
         None => Ok(HttpResponse::InternalServerError().json(Health {
             state: HealthState::Prepare,
-            leader: false,
+            leader: None,
             id: 0,
         })),
         Some(current) => {
-            let leader = nodes.get_leader().actix()?;
             return Ok(HttpResponse::Ok().json(Health {
                 state: HealthState::Running,
-                leader: current.id == leader.id,
+                leader: nodes.get_leader().and_then(|n| Some(n.id)),
                 id: current.id,
             }));
         }
