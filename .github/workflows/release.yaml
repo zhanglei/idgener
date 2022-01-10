@@ -8,17 +8,34 @@ on:
       - 'v*'
 
 jobs:
-  show:
-    name: show
+  on-tags:
+    name: Create Release
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - name: show ${{github.event_name}}
-        run: |
-          echo "${{github.event_name}}"
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Create Release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
 
-#  release:
-#    if: github.event_name == 'tags'
-#
+  on-release:
+    name: publish
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@master
+      - name: Publish Package
+        run: |
+          echo "${{github.release.tag_name}}"
+
 #  build:
 #    if: github.event_name == 'release'
 #    name: release ${{ matrix.target }} (with non-required env)
