@@ -18,15 +18,15 @@ jobs:
       - name: Create Release
         uses: actions/create-release@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
+          release_name: ${{ github.ref }}
+          draft: true
           prerelease: false
 
   on-release:
-    name: publish
+    name: Publish Release
     if: github.event_name == 'release'
     runs-on: ubuntu-latest
     steps:
