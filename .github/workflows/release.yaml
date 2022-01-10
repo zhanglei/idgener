@@ -1,0 +1,47 @@
+name: release
+
+on:
+  release:
+    types: [created]
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  show:
+    name: show
+    runs-on: ubuntu-latest
+    steps:
+      - name: show ${{github.event_name}}
+        run: |
+          echo "${{github.event_name}}"
+
+#  release:
+#    if: github.event_name == 'tags'
+#
+#  build:
+#    if: github.event_name == 'release'
+#    name: release ${{ matrix.target }} (with non-required env)
+#    runs-on: ubuntu-latest
+#    strategy:
+#      fail-fast: false
+#      matrix:
+#        include:
+#          - target: x86_64-pc-windows-gnu
+#            archive: zip
+#          - target: x86_64-unknown-linux-musl
+#            archive: tar.gz
+#          - target: x86_64-apple-darwin
+#            archive: zip
+#          - target: wasm32-wasi
+#            archive: zip tar.gz
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@master
+#      - name: Compile and release
+#        uses: rust-build/rust-build.action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          RUSTTARGET: ${{ matrix.target }}
+#          ARCHIVE_TYPES: ${{ matrix.archive }}
+#          MINIFY: "yes"

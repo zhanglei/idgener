@@ -254,7 +254,8 @@ mod test {
     use std::thread;
     use std::time::Duration;
 
-    use actix_web::{rt, web};
+    use actix_web::{web};
+    use anyhow::Context;
     use futures::executor::block_on;
     use http_client::http_types::StatusCode;
     use http_client::{HttpClient, Request};
@@ -263,8 +264,8 @@ mod test {
     use crate::server::server::{bind, CLIENT};
     use crate::server::AppState;
 
-    #[test]
-    fn test_bind() {
+    #[actix_rt::test]
+    async fn test_bind() -> anyhow::Result<()> {
         logger::init(true);
 
         let (tx, rx) = std::sync::mpsc::channel();
@@ -291,7 +292,7 @@ mod test {
             log::info!("closed server");
         });
 
-        let _ = rt::System::new("block").block_on(server);
+        server.await.context("runner server")
     }
 
     #[test]
