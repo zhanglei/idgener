@@ -16,7 +16,8 @@ crash() {
 export api="https://api.github.com/repos/ihaiker/idgener"
 export repo="https://github.com/ihaiker/idgener"
 
-export tag=$(git describe --abbrev=0 --tags `git rev-list --tags --max-count=1`)
+export this_tag=$(git describe --abbrev=0 --tags `git rev-list --tags --max-count=1`)
+export this_tag=${GIT_TAG_NAME:-$this_tag}
 export previous_tag=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
 
 export -f info

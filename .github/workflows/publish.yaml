@@ -1,0 +1,32 @@
+name: publish
+on:
+  release:
+    types: [created]
+
+  build:
+    name: build ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - target: x86_64-pc-windows-gnu
+            name: idgener-windows-x86_64
+            archive: zip
+          - target: x86_64-unknown-linux-musl
+            name: idgener-linux-x86_64
+            archive: tar.gz tar.xz
+          - target: x86_64-apple-darwin
+            name: idgener-darwin-x86_64
+            archive: ar.gz
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@master
+      - name: Compile and release
+        uses: rust-build/rust-build.action@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RUSTTARGET: ${{ matrix.target }}
+          ARCHIVE_TYPES: ${{ matrix.archive }}
+          NAME: ${{ matrix.name }}
+          MINIFY: true
