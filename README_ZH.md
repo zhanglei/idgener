@@ -2,7 +2,7 @@
 
 一个多模式、多数据集、分布式ID生成器。
 
-## 特性 
+## 特性
 
 1. 多模式
    - 顺序递增ID
@@ -15,3 +15,6 @@
 ## 架构
 
 ## 性能测试
+
+
+[1]: https://stevenbai.top/rust/lock-freedom-without-garbage-collection/ '无锁实现'

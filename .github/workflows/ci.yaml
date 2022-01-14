@@ -1,7 +1,13 @@
 name: ci
 
-on: [ push, pull_request ]
-
+on:
+  push:
+    paths:
+      - '**.rs'
+  pull_request:
+    paths:
+      - '**.rs'
+      
 jobs:
   test:
     strategy:
