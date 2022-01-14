@@ -297,7 +297,7 @@ mod test {
 
     #[test]
     fn http_client() {
-        let req = Request::get("https://baidu.com");
+        let req = Request::get("https://bing.com");
         let resp = block_on(CLIENT.send(req));
         assert!(resp.is_ok());
         let resp = resp.unwrap();
