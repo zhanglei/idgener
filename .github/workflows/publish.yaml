@@ -3,7 +3,8 @@ on:
   release:
     types: [created]
 
-  build:
+jobs:
+  publish:
     name: build ${{ matrix.target }}
     runs-on: ubuntu-latest
     strategy:
@@ -18,7 +19,7 @@ on:
             archive: tar.gz tar.xz
           - target: x86_64-apple-darwin
             name: idgener-darwin-x86_64
-            archive: ar.gz
+            archive: tar.gz
     steps:
       - name: Checkout Code
         uses: actions/checkout@master
