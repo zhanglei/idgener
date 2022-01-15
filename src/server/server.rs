@@ -297,10 +297,10 @@ mod test {
 
     #[test]
     fn http_client() {
-        let req = Request::get("https://bing.com");
+        let req = Request::get("http://ip-api.com/json");
         let resp = block_on(CLIENT.send(req));
         assert!(resp.is_ok());
         let resp = resp.unwrap();
-        assert_eq!(StatusCode::Found, resp.status());
+        assert_eq!(StatusCode::Ok, resp.status());
     }
 }
